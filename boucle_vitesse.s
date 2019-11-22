@@ -35,12 +35,12 @@ __reset:
 		BSET QEICON, #10     
                                   
 		BCLR TRISA, #RA9	      	;Définir le bit 9 du port A en sortie
-		MOV #065534, W0
-		MOV	W0,PR1					; fixe une valeur pour compter jusqu'à 1ms
-		BSET T1CON, #TCKPS0
-		BSET T1CON, #TCKPS1		  	;A une fréquence de 500ms diviser par 256
-		BSET T1CON, #TON		  	;allume le timer 1
-		BSET IEC0, #T1IE	      
+		MOV  #029412, W0		;choosen dt of 1ms over Tcy equals 29412 CPU cycles
+		MOV  W0,PR1			;fixe une valeur pour compter jusqu'a 1ms
+		;BSET T1CON, #TCKPS0
+		;BSET T1CON, #TCKPS1		;A une frequence de 500ms diviser par 256
+		BSET T1CON, #TON		;allume le timer 1
+		BSET IEC0, #T1IE		;Interrupt request
 		
 done:
         BRA     done              
