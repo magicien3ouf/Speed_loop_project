@@ -58,25 +58,18 @@ INITIALISATION:
 ;Interruption 
 ;..............................................................................
 __T1Interrupt:
-        PUSH.D W4                  ;Save context using double-word PUSH
-		PUSH.D W2
+        PUSH.D W2		    ;Save context using double-word PUSH
+	PUSH.D W4
 
         BTG LATA, #RA9
-		MOV #0,W4		
-		MOV POSCNT,W4
-		SUB W4,W2,W1
-		MOV #0,W2
-		MOV W4,W2
+	    MOV #0, W4		
+	    MOV POSCNT, W4	    ;current value of theta
+	    SUB W4, W2, W2	    ;W2 = W4 - W2   W4 become angular gap mesured in dt = 1ms
 
-
-        BCLR IFS0, #T1IF           ;Clear the Timer1 Interrupt flag Status
-                                   ;bit.
-        POP.D W4
-		POP.D W2                 
-        RETFIE                     
-
+        BCLR IFS0, #T1IF	    ;Clear the Timer1 Interrupt flag Status bit.
+	
+        POP.D W2		    ;angular gap mesured is saved
+	POP.D W4		    ;old value of theta is saved
+        RETFIE			    ;end of TIMER1 interupt
 ;..............................................................................
 .end
-
-
-
