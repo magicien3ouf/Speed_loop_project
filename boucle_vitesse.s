@@ -19,8 +19,9 @@
     .global	__T1Interrupt
     .global	angle
     .global	speed
-    .equ	Nb_Points,1024
-    .equ	Nb_max,Nb_Points*4
+    .equ	Nb_Points, 1024
+    .equ	Nb_max, Nb_Points*4
+    .equ	Vmax, 4000			;4000 rpm
 ;..............................................................................
     .section	.nbss, bss, near
 speed:  	.space 2
@@ -56,6 +57,9 @@ INITIALIZATIONS:
     MOV		#29412, W0		;Choosen dt of 1ms over Tcy equals 29412 CPU cycles
     MOV		W0, PR1			;Set a value in PR1 to count until 1ms
     BSET	T1CON, #TON		;Set the TIMER1 on
+;ADC1 init and config    
+    MOV #0x836E,W0 ; on met les bits 8 et 9 a 1 pour format 1.15 signe
+    MOV W0,ADCON1
     RETURN
 ;..............................................................................
 ;Interruption
