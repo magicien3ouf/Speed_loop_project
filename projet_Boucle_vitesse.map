@@ -1,4 +1,4 @@
-Microchip Technology Inc, vv3_23 (2) Ê
+Microchip Technology Inc, vv3_23 (2) î
 
 Tool Name:
   C:\Program Files (x86)\Microchip\MPLAB ASM30 Suite\bin\bin/pic30-coff-ld.exe
@@ -8,6 +8,8 @@ Command:
   --script=p30F6010A.gld \
   --defsym=__MPLAB_BUILD=1 \
   --defsym=__MPLAB_DEBUG=1 \
+  --defsym=__MPLAB_DEBUGGER_ICD2=1 \
+  --defsym=__ICD2RAM=1 \
   -oprojet_Boucle_vitesse.cof \
   -Map=projet_Boucle_vitesse.map \
   --report-mem \
@@ -41,19 +43,20 @@ Program Memory  [Origin = 0x100, Length = 0x17efe]
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x100                 0x2             0x3  (3)
-.text                        0x102                0x3a            0x57  (87)
-.dinit                       0x13c                 0x8             0xc  (12)
+.text                        0x102                0xba           0x117  (279)
+.dinit                       0x1bc                 0x8             0xc  (12)
 
-                     Total program memory used (bytes):           0x66  (102) <1%
+                     Total program memory used (bytes):          0x126  (294) <1%
 
 
 Data Memory  [Origin = 0x800, Length = 0x2000]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.nbss                        0x800                   0             0x2  (2)
+.icd                         0x800                0x50            0x50  (80)
+.nbss                        0x850                   0             0x4  (4)
 
-                        Total data memory used (bytes):            0x2  (2) <1%
+                        Total data memory used (bytes):           0x54  (84) 1%
 
 
 Dynamic Memory Usage
@@ -61,23 +64,35 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0x802                              0x1ffe  (8190)
+stack                        0x854                              0x1fac  (8108)
 
-                        Maximum dynamic memory (bytes):         0x1ffe  (8190)
+                        Maximum dynamic memory (bytes):         0x1fac  (8108)
 
+
+External Symbols in Data Memory (by address):
+
+                    0x0850                  speed
+                    0x0852                  angle
+
+External Symbols in Data Memory (by name):
+
+                    0x0852                  angle
+                    0x0850                  speed
 
 External Symbols in Program Memory (by address):
 
                   0x000100                  __DefaultInterrupt
                   0x000102                  __reset
-                  0x000124                  __T1Interrupt
+                  0x000182                  __PWMInterrupt
+                  0x00019e                  __T1Interrupt
                   0xf8000a                  __FGS.sec
 
 External Symbols in Program Memory (by name):
 
                   0x000100                  __DefaultInterrupt
                   0xf8000a                  __FGS.sec
-                  0x000124                  __T1Interrupt
+                  0x000182                  __PWMInterrupt
+                  0x00019e                  __T1Interrupt
                   0x000102                  __reset
 
 Memory Configuration
@@ -188,6 +203,10 @@ __FICD
 user_eedata
  *(user_eedata)
 
+.icd                0x0800         0x50
+                    0x0850                  . = (. + DEFINED (__ICD2RAM)?0x50:0x0)
+ *fill*             0x0800         0x5000
+
 userdata
  *(userdata)
 
@@ -237,7 +256,7 @@ userdata
                   0x000014          0x4 LONG 0x100 DEFINED (__INT0Interrupt)?<code 339> (__INT0Interrupt):<code 339> (__DefaultInterrupt)
                   0x000016          0x4 LONG 0x100 DEFINED (__IC1Interrupt)?<code 339> (__IC1Interrupt):<code 339> (__DefaultInterrupt)
                   0x000018          0x4 LONG 0x100 DEFINED (__OC1Interrupt)?<code 339> (__OC1Interrupt):<code 339> (__DefaultInterrupt)
-                  0x00001a          0x4 LONG 0x124 DEFINED (__T1Interrupt)?<code 339> (__T1Interrupt):<code 339> (__DefaultInterrupt)
+                  0x00001a          0x4 LONG 0x19e DEFINED (__T1Interrupt)?<code 339> (__T1Interrupt):<code 339> (__DefaultInterrupt)
                   0x00001c          0x4 LONG 0x100 DEFINED (__IC2Interrupt)?<code 339> (__IC2Interrupt):<code 339> (__DefaultInterrupt)
                   0x00001e          0x4 LONG 0x100 DEFINED (__OC2Interrupt)?<code 339> (__OC2Interrupt):<code 339> (__DefaultInterrupt)
                   0x000020          0x4 LONG 0x100 DEFINED (__T2Interrupt)?<code 339> (__T2Interrupt):<code 339> (__DefaultInterrupt)
@@ -273,7 +292,7 @@ userdata
                   0x00005c          0x4 LONG 0x100 DEFINED (__INT3Interrupt)?<code 339> (__INT3Interrupt):<code 339> (__DefaultInterrupt)
                   0x00005e          0x4 LONG 0x100 DEFINED (__INT4Interrupt)?<code 339> (__INT4Interrupt):<code 339> (__DefaultInterrupt)
                   0x000060          0x4 LONG 0x100 DEFINED (__C2Interrupt)?<code 339> (__C2Interrupt):<code 339> (__DefaultInterrupt)
-                  0x000062          0x4 LONG 0x100 DEFINED (__PWMInterrupt)?<code 339> (__PWMInterrupt):<code 339> (__DefaultInterrupt)
+                  0x000062          0x4 LONG 0x182 DEFINED (__PWMInterrupt)?<code 339> (__PWMInterrupt):<code 339> (__DefaultInterrupt)
                   0x000064          0x4 LONG 0x100 DEFINED (__QEIInterrupt)?<code 339> (__QEIInterrupt):<code 339> (__DefaultInterrupt)
                   0x000066          0x4 LONG 0x100 DEFINED (__DCIInterrupt)?<code 339> (__DCIInterrupt):<code 339> (__DefaultInterrupt)
                   0x000068          0x4 LONG 0x100 DEFINED (__LVDInterrupt)?<code 339> (__LVDInterrupt):<code 339> (__DefaultInterrupt)
@@ -301,7 +320,7 @@ userdata
                   0x000094          0x4 LONG 0x100 DEFINED (__AltINT0Interrupt)?<code 339> (__AltINT0Interrupt):DEFINED (__INT0Interrupt)?<code 339> (__INT0Interrupt):<code 339> (__DefaultInterrupt)
                   0x000096          0x4 LONG 0x100 DEFINED (__AltIC1Interrupt)?<code 339> (__AltIC1Interrupt):DEFINED (__IC1Interrupt)?<code 339> (__IC1Interrupt):<code 339> (__DefaultInterrupt)
                   0x000098          0x4 LONG 0x100 DEFINED (__AltOC1Interrupt)?<code 339> (__AltOC1Interrupt):DEFINED (__OC1Interrupt)?<code 339> (__OC1Interrupt):<code 339> (__DefaultInterrupt)
-                  0x00009a          0x4 LONG 0x124 DEFINED (__AltT1Interrupt)?<code 339> (__AltT1Interrupt):DEFINED (__T1Interrupt)?<code 339> (__T1Interrupt):<code 339> (__DefaultInterrupt)
+                  0x00009a          0x4 LONG 0x19e DEFINED (__AltT1Interrupt)?<code 339> (__AltT1Interrupt):DEFINED (__T1Interrupt)?<code 339> (__T1Interrupt):<code 339> (__DefaultInterrupt)
                   0x00009c          0x4 LONG 0x100 DEFINED (__AltIC2Interrupt)?<code 339> (__AltIC2Interrupt):DEFINED (__IC2Interrupt)?<code 339> (__IC2Interrupt):<code 339> (__DefaultInterrupt)
                   0x00009e          0x4 LONG 0x100 DEFINED (__AltOC2Interrupt)?<code 339> (__AltOC2Interrupt):DEFINED (__OC2Interrupt)?<code 339> (__OC2Interrupt):<code 339> (__DefaultInterrupt)
                   0x0000a0          0x4 LONG 0x100 DEFINED (__AltT2Interrupt)?<code 339> (__AltT2Interrupt):DEFINED (__T2Interrupt)?<code 339> (__T2Interrupt):<code 339> (__DefaultInterrupt)
@@ -337,7 +356,7 @@ userdata
                   0x0000dc          0x4 LONG 0x100 DEFINED (__AltINT3Interrupt)?<code 339> (__AltINT3Interrupt):DEFINED (__INT3Interrupt)?<code 339> (__INT3Interrupt):<code 339> (__DefaultInterrupt)
                   0x0000de          0x4 LONG 0x100 DEFINED (__AltINT4Interrupt)?<code 339> (__AltINT4Interrupt):DEFINED (__INT4Interrupt)?<code 339> (__INT4Interrupt):<code 339> (__DefaultInterrupt)
                   0x0000e0          0x4 LONG 0x100 DEFINED (__AltC2Interrupt)?<code 339> (__AltC2Interrupt):DEFINED (__C2Interrupt)?<code 339> (__C2Interrupt):<code 339> (__DefaultInterrupt)
-                  0x0000e2          0x4 LONG 0x100 DEFINED (__AltPWMInterrupt)?<code 339> (__AltPWMInterrupt):DEFINED (__PWMInterrupt)?<code 339> (__PWMInterrupt):<code 339> (__DefaultInterrupt)
+                  0x0000e2          0x4 LONG 0x182 DEFINED (__AltPWMInterrupt)?<code 339> (__AltPWMInterrupt):DEFINED (__PWMInterrupt)?<code 339> (__PWMInterrupt):<code 339> (__DefaultInterrupt)
                   0x0000e4          0x4 LONG 0x100 DEFINED (__AltQEIInterrupt)?<code 339> (__AltQEIInterrupt):DEFINED (__QEIInterrupt)?<code 339> (__QEIInterrupt):<code 339> (__DefaultInterrupt)
                   0x0000e6          0x4 LONG 0x100 DEFINED (__AltDCIInterrupt)?<code 339> (__AltDCIInterrupt):DEFINED (__DCIInterrupt)?<code 339> (__DCIInterrupt):<code 339> (__DefaultInterrupt)
                   0x0000e8          0x4 LONG 0x100 DEFINED (__AltLVDInterrupt)?<code 339> (__AltLVDInterrupt):DEFINED (__LVDInterrupt)?<code 339> (__LVDInterrupt):<code 339> (__DefaultInterrupt)
@@ -1390,18 +1409,23 @@ userdata
                     0x0216                  _UART2 = 0x216
                     0x0001                  __MPLAB_BUILD = 0x1
                     0x0001                  __MPLAB_DEBUG = 0x1
+                    0x0001                  __MPLAB_DEBUGGER_ICD2 = 0x1
+                    0x0001                  __ICD2RAM = 0x1
 OUTPUT(projet_Boucle_vitesse.cof coff-pic30)
 LOAD FGS
 LOAD data_init
 LOAD default_isr
 
-.nbss               0x0800          0x2
- .nbss              0x0800          0x2 boucle_vitesse.o
+.nbss               0x0850          0x4
+ .nbss              0x0850          0x4 boucle_vitesse.o
+                    0x0850                  speed
+                    0x0852                  angle
 
-.text             0x000102         0x3a
- .text            0x000102         0x3a boucle_vitesse.o
+.text             0x000102         0xba
+ .text            0x000102         0xba boucle_vitesse.o
                   0x000102                  _reset
-                  0x000124                  _T1Interrupt
+                  0x000182                  _PWMInterrupt
+                  0x00019e                  _T1Interrupt
 
-.dinit            0x00013c          0x8
- .dinit           0x00013c          0x8 data_init
+.dinit            0x0001bc          0x8
+ .dinit           0x0001bc          0x8 data_init
