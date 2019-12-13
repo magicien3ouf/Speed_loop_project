@@ -1,30 +1,31 @@
-;DATE:		15/11/2019
-;AUTHORS :	Henri PREVOST, Alexis MOURLON
-;TITLE :	Speed_loop_project
-;LAST UPDATE:	29/11/2019
-;03830 carte
+;DATE:		    15/11/2019
+;AUTHORS :	    Henri PREVOST, Alexis MOURLON
+;TITLE :	    Speed_loop_project
+;FILE CREATION :    29/11/2019
+;LAST UPDATE :	    13/12/2019
+;CARD :		    03830
 
 ;OVERVIEW :	Given a speed reference as input with the potentiometer,
-;			measure the speed of the motor with a rotary encoder and determine the speed error.
-;			Then apply a correction to make a speed control of the DC motor.
-;..............................................................................
+;		measure the speed of the motor with a rotary encoder and determine the speed error.
+;		Then apply a correction to make a speed control of the DC motor.
+;...............................................................................
 .equ __30F6010A, 1
 .include "p30f6010A.inc"
     config	__FOSC, CSW_FSCM_OFF & XT_PLL16	;Turn off clock switching and
     config	__FWDT, WDT_OFF					;Turn off Watchdog Timer
     config	__FBORPOR, PBOR_ON & PWRT_16 & MCLR_EN
     config	__FGS, GWRP_OFF					;Set Code Protection Off for the
-											;general segment
-;..............................................................................
+								;general segment
+;...............................................................................
     .global	__reset
     .global	__T1Interrupt
-	.global __PWMInterrupt
-;..............................................................................
+    .global	__PWMInterrupt
+;...............................................................................
 ;Useful constants/variables for speed control	
     .global	angle
     .global	speed
-	.global consigne
-	.global erreur
+    .global	consigne
+    .global	erreur
 
     .equ	Nb_Points, 1024					;Rotary encoder nb points
     .equ	Nb_max, Nb_Points*4
@@ -43,7 +44,7 @@
     .section	.nbss, bss, near
 speed:  	.space 2
 angle:		.space 2
-consigne:		.space 2
+consigne:	.space 2
 erreur:		.space 2
 ;..............................................................................
 .text
