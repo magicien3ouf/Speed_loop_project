@@ -1,4 +1,4 @@
-Microchip Technology Inc, vv3_23 (2) î
+Microchip Technology Inc, vv3_23 (2) ³
 
 Tool Name:
   C:\Program Files (x86)\Microchip\MPLAB ASM30 Suite\bin\bin/pic30-coff-ld.exe
@@ -43,10 +43,10 @@ Program Memory  [Origin = 0x100, Length = 0x17efe]
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x100                 0x2             0x3  (3)
-.text                        0x102                0xba           0x117  (279)
-.dinit                       0x1bc                 0x8             0xc  (12)
+.text                        0x102                0xc6           0x129  (297)
+.dinit                       0x1c8                 0x8             0xc  (12)
 
-                     Total program memory used (bytes):          0x126  (294) <1%
+                     Total program memory used (bytes):          0x138  (312) <1%
 
 
 Data Memory  [Origin = 0x800, Length = 0x2000]
@@ -54,9 +54,9 @@ Data Memory  [Origin = 0x800, Length = 0x2000]
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
 .icd                         0x800                0x50            0x50  (80)
-.nbss                        0x850                   0             0x4  (4)
+.nbss                        0x850                   0             0x8  (8)
 
-                        Total data memory used (bytes):           0x54  (84) 1%
+                        Total data memory used (bytes):           0x58  (88) 1%
 
 
 Dynamic Memory Usage
@@ -64,19 +64,23 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0x854                              0x1fac  (8108)
+stack                        0x858                              0x1fa8  (8104)
 
-                        Maximum dynamic memory (bytes):         0x1fac  (8108)
+                        Maximum dynamic memory (bytes):         0x1fa8  (8104)
 
 
 External Symbols in Data Memory (by address):
 
                     0x0850                  speed
                     0x0852                  angle
+                    0x0854                  consigne
+                    0x0856                  erreur
 
 External Symbols in Data Memory (by name):
 
                     0x0852                  angle
+                    0x0854                  consigne
+                    0x0856                  erreur
                     0x0850                  speed
 
 External Symbols in Program Memory (by address):
@@ -84,7 +88,7 @@ External Symbols in Program Memory (by address):
                   0x000100                  __DefaultInterrupt
                   0x000102                  __reset
                   0x000182                  __PWMInterrupt
-                  0x00019e                  __T1Interrupt
+                  0x0001ae                  __T1Interrupt
                   0xf8000a                  __FGS.sec
 
 External Symbols in Program Memory (by name):
@@ -92,7 +96,7 @@ External Symbols in Program Memory (by name):
                   0x000100                  __DefaultInterrupt
                   0xf8000a                  __FGS.sec
                   0x000182                  __PWMInterrupt
-                  0x00019e                  __T1Interrupt
+                  0x0001ae                  __T1Interrupt
                   0x000102                  __reset
 
 Memory Configuration
@@ -256,7 +260,7 @@ userdata
                   0x000014          0x4 LONG 0x100 DEFINED (__INT0Interrupt)?<code 339> (__INT0Interrupt):<code 339> (__DefaultInterrupt)
                   0x000016          0x4 LONG 0x100 DEFINED (__IC1Interrupt)?<code 339> (__IC1Interrupt):<code 339> (__DefaultInterrupt)
                   0x000018          0x4 LONG 0x100 DEFINED (__OC1Interrupt)?<code 339> (__OC1Interrupt):<code 339> (__DefaultInterrupt)
-                  0x00001a          0x4 LONG 0x19e DEFINED (__T1Interrupt)?<code 339> (__T1Interrupt):<code 339> (__DefaultInterrupt)
+                  0x00001a          0x4 LONG 0x1ae DEFINED (__T1Interrupt)?<code 339> (__T1Interrupt):<code 339> (__DefaultInterrupt)
                   0x00001c          0x4 LONG 0x100 DEFINED (__IC2Interrupt)?<code 339> (__IC2Interrupt):<code 339> (__DefaultInterrupt)
                   0x00001e          0x4 LONG 0x100 DEFINED (__OC2Interrupt)?<code 339> (__OC2Interrupt):<code 339> (__DefaultInterrupt)
                   0x000020          0x4 LONG 0x100 DEFINED (__T2Interrupt)?<code 339> (__T2Interrupt):<code 339> (__DefaultInterrupt)
@@ -320,7 +324,7 @@ userdata
                   0x000094          0x4 LONG 0x100 DEFINED (__AltINT0Interrupt)?<code 339> (__AltINT0Interrupt):DEFINED (__INT0Interrupt)?<code 339> (__INT0Interrupt):<code 339> (__DefaultInterrupt)
                   0x000096          0x4 LONG 0x100 DEFINED (__AltIC1Interrupt)?<code 339> (__AltIC1Interrupt):DEFINED (__IC1Interrupt)?<code 339> (__IC1Interrupt):<code 339> (__DefaultInterrupt)
                   0x000098          0x4 LONG 0x100 DEFINED (__AltOC1Interrupt)?<code 339> (__AltOC1Interrupt):DEFINED (__OC1Interrupt)?<code 339> (__OC1Interrupt):<code 339> (__DefaultInterrupt)
-                  0x00009a          0x4 LONG 0x19e DEFINED (__AltT1Interrupt)?<code 339> (__AltT1Interrupt):DEFINED (__T1Interrupt)?<code 339> (__T1Interrupt):<code 339> (__DefaultInterrupt)
+                  0x00009a          0x4 LONG 0x1ae DEFINED (__AltT1Interrupt)?<code 339> (__AltT1Interrupt):DEFINED (__T1Interrupt)?<code 339> (__T1Interrupt):<code 339> (__DefaultInterrupt)
                   0x00009c          0x4 LONG 0x100 DEFINED (__AltIC2Interrupt)?<code 339> (__AltIC2Interrupt):DEFINED (__IC2Interrupt)?<code 339> (__IC2Interrupt):<code 339> (__DefaultInterrupt)
                   0x00009e          0x4 LONG 0x100 DEFINED (__AltOC2Interrupt)?<code 339> (__AltOC2Interrupt):DEFINED (__OC2Interrupt)?<code 339> (__OC2Interrupt):<code 339> (__DefaultInterrupt)
                   0x0000a0          0x4 LONG 0x100 DEFINED (__AltT2Interrupt)?<code 339> (__AltT2Interrupt):DEFINED (__T2Interrupt)?<code 339> (__T2Interrupt):<code 339> (__DefaultInterrupt)
@@ -1416,16 +1420,18 @@ LOAD FGS
 LOAD data_init
 LOAD default_isr
 
-.nbss               0x0850          0x4
- .nbss              0x0850          0x4 boucle_vitesse.o
+.nbss               0x0850          0x8
+ .nbss              0x0850          0x8 boucle_vitesse.o
                     0x0850                  speed
                     0x0852                  angle
+                    0x0854                  consigne
+                    0x0856                  erreur
 
-.text             0x000102         0xba
- .text            0x000102         0xba boucle_vitesse.o
+.text             0x000102         0xc6
+ .text            0x000102         0xc6 boucle_vitesse.o
                   0x000102                  _reset
                   0x000182                  _PWMInterrupt
-                  0x00019e                  _T1Interrupt
+                  0x0001ae                  _T1Interrupt
 
-.dinit            0x0001bc          0x8
- .dinit           0x0001bc          0x8 data_init
+.dinit            0x0001c8          0x8
+ .dinit           0x0001c8          0x8 data_init

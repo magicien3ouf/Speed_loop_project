@@ -2,6 +2,7 @@
 ;AUTHORS :	Henri PREVOST, Alexis MOURLON
 ;TITLE :	Speed_loop_project
 ;LAST UPDATE:	29/11/2019
+;03830 carte
 
 ;OVERVIEW :	Given a speed reference as input with the potentiometer,
 ;			measure the speed of the motor with a rotary encoder and determine the speed error.
@@ -23,6 +24,8 @@
     .global	angle
     .global	speed
 	.global consigne
+	.global erreur
+
     .equ	Nb_Points, 1024					;Rotary encoder nb points
     .equ	Nb_max, Nb_Points*4
     .equ	Vmax, 4000						;4000 rpm
@@ -33,13 +36,15 @@
 	.equ 	F_PWM, 16000 ; 16kHz
 	.equ 	PWM_PER,F_CYCLE/F_PWM/2
 	.equ 	deadTime, 60					;2 ms
-	.equ RC50,PWM_PER
-	.equ RC25,RC50/2
-	.equ RC75,RC50+RC25
+	.equ 	RC50,PWM_PER
+	.equ 	RC25,RC50/2
+	.equ 	RC75,RC50+RC25
 ;..............................................................................
     .section	.nbss, bss, near
 speed:  	.space 2
 angle:		.space 2
+consigne:		.space 2
+erreur:		.space 2
 ;..............................................................................
 .text
 __reset:
@@ -135,19 +140,30 @@ INITIALIZATIONS:
 ;..............................................................................
 __PWMInterrupt:
 	PUSH.D W4 
+	PUSH.D W6 
+	
     BSET LATA, #RA9
-	MOV ADCBUF0, W4
-	MOV #RC50,W5
-	MPY W4*W5,A 
-	SAC A,W4
-	ADD W4,W5,W4
-	MOV W4,PDC1
+	MOV #RC50,W5			;RC50 defined as PWM_PER = 921
+	MOV ADCBUF0, W4			; consigne
+	MOV W4,consigne
+	GOTO BclO
+;...........................................................................
+;Asservissement en vitesse en comparant la vitesse mesurée et la consigne
+	MOV		speed,W6
+	SUB		W4, W6, W4		;W5->erreur calc
+	MOV		W4, erreur
+BclO:
+	MPY W4*W5,A 			;mult & accumulate A = W4*W5
+	SAC A,W4				;store accumulator 
+	ADD W4,W5,W4			;W4 = W4 + W5
+	MOV W4,PDC1				;input the result in the duty cycle register 1
+	ADD W5,W5,W5			;W5 = 2*W5
+	SUB W5,W4,W4			;W4 = W5 - W4
+	MOV W4,PDC2				;to the DC register 2 (complementary of PDC1)
 
-	ADD W5,W5,W5
-	SUB W5,W4,W4
-	MOV W4,PDC2
     BCLR IFS2, #PWMIF
 
+	POP.D W6                                                 
 	POP.D W4                                                 
        RETFIE  
 ;..............................................................................
@@ -155,22 +171,21 @@ __PWMInterrupt:
 __T1Interrupt:
     PUSH.D	W2		   		;Save context using double-word PUSH
     PUSH.D	W4
-
-	MOV #100, W1			;gain for the potentiomoter to adapt magnitude
-	MOV ADCBUF0, W0
-	MUL.SU 	W1, W0, W6		;Multiplication W3 = W1 (signed) * W0 (unsigned)
-
-    BTG		LATA, #RA9
+    BTG		LATA, #RA14
     MOV		angle,W2
     MOV 	POSCNT, W4	    ;current value of theta
-    SUB 	W4, W2, W3	    ;W3 = W4 - W2   W4 become angular gap mesured in dt = 1ms
-    MOV 	W3, speed
     MOV		W4, angle
+    SUB 	W4, W2, W4	    ;W4 = W4 - W2   W4 become angular gap mesured in dt = 1ms
+;	MOV		#124,W5			; mise à l'échelle de la vitesse
+;	MPY		W4*W5,B
+;	SAC		B,W3
+	SL		W4,#7,W4
+    MOV 	W4, speed
 
     BCLR 	IFS0, #T1IF	    ;Clear the Timer1 Interrupt flag Status bit.
 
-    POP.D	W2		   		;angular gap mesured is saved
     POP.D	W4		    	;old value of theta is saved
+    POP.D	W2		   		;angular gap mesured is saved
     RETFIE			    	;end of TIMER1 interupt
 ;..............................................................................
 
